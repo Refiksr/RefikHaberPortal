@@ -1,0 +1,33 @@
+﻿@model HaberTuru
+
+@{
+    ViewData["Title"] = "Kategori Ekle";
+
+    Layout = "_layoutAdminLTE";
+}
+
+
+<form method="post">
+	<div class="container" style="margin-left:275px;margin-top:30px">
+        <div class="row pb-4">
+            <h1 style="color: black;">Kategori Ekle</h1>
+            </hr>
+        </div>
+
+    <div class="row">
+        <div class="col-10">
+            <div class="mb-3">
+                    <label asp-for="Ad" class="p-0"></label>
+                    <input asp-for="Ad" class="form-control" />
+                    <span asp-validation-for="Ad" class="text-danger"></span>
+            </div>
+                <button type="submit" class="btn btn-lg btn-primary" style="width:300px">Kaydet</button>
+                <a asp-controller="HaberTuru" asp-action="Index" class="btn btn-lg btn-primary" style="width:300px">
+                    Geri Dön
+                </a>
+
+        </div>
+        </div>
+    </div>
+</form>
+

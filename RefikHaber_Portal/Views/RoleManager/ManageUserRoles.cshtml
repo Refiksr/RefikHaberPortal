@@ -1,0 +1,86 @@
+﻿@using RefikHaber.Models
+
+@{
+    ViewData["Title"] = "Kullanıcının Rolünü Düzenle";
+
+    Layout = "_layoutAdminLTE";
+}
+
+@model List<ApplicationUser>
+
+<div class="container" style="margin-left:275px;margin-top:30px">
+	<div class="col-md-10">
+		<h2 style="margin-left:250px; margin-top:30px">Kullanıcı Rolü Düzenle</h2>
+
+		<table class="table" style="margin-left:250px; margin-top:40px">
+			<thead>
+				<tr>
+					<th>Kullanıcı Adı</th>
+					<th>Mevcut Rol</th>
+					<th>Rol Seç</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var user in Model)
+				{
+
+					// Kullanıcının mevcut rollerini almak
+
+					var userRoles = (List<string>)ViewBag.UserRoles[user.Id];
+
+					var currentRoleId = userRoles.FirstOrDefault(); // Mevcut rol ID'sini al
+
+
+
+					// Mevcut rol adını bulmak için ViewBag.Roles içinde döngü
+
+					var currentRoleName = string.Empty;
+
+					if (currentRoleId != null)
+
+					{
+
+						var role = ((IEnumerable<AppRole>)ViewBag.Roles).FirstOrDefault(r => r.Id == currentRoleId);
+
+						currentRoleName = role?.Name; // Mevcut rol adını al
+
+					}
+
+					<tr>
+						<td>@user.UserName</td>
+						<td>@currentRoleName</td> <!-- Mevcut rol adını göster -->
+						<td>
+							<form method="post" onsubmit="return validateForm(this);">
+								<input type="hidden" name="userId" value="@user.Id" />
+								<select name="selectedRoles" class="form-select form-select-sm" aria-label="Small select example">
+									<option value="" selected disabled>Seçiniz...</option> <!-- Varsayılan seçenek -->
+									@foreach (var role in ViewBag.Roles)
+
+									{
+										<option value="@role.Id">@role.Name</option> <!-- Rol ID'si ve adı -->
+									}
+								</select>
+								<button type="submit" class="btn btn-success" style="margin-left:200px">Güncelle</button>
+							</form>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+@section Scripts {
+    <script>
+        function validateForm(form) {
+            var selectedRole = form.selectedRoles.value;
+            if (!selectedRole) {
+                alert("Lütfen bir rol seçin.");
+                return false; // Form gönderimini engeller
+            }
+            return true; // Form gönderimine izin verir
+        }
+    </script>
+}

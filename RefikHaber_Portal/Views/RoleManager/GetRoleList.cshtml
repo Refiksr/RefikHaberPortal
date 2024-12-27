@@ -1,0 +1,40 @@
+﻿@using RefikHaber.Models
+@{
+    ViewData["Title"] = "Rol Listesi";
+
+    Layout = "_layoutAdminLTE";
+}
+@model List<AppRole>
+<div class="container" style="margin-left:275px;margin-top:30px">
+    <h1>Roller</h1>
+    <a asp-action="RoleAdd" class="btn btn-primary" style="position:relative; left:270px; top:30px">Rol Ekle</a>
+    <div class="row" style="position:relative; left:270px; top:50px">
+        <div class="col-md-8">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>
+                                <form asp-action="RoleDelete" method="post" onsubmit="return confirm('Bu rolü silmek istediğinize emin misiniz?');">
+                                    <input type="hidden" name="roleId" value="@item.Id" />
+                                    <center><button type="submit" class="btn btn-danger btn-sm" style="width:80px">Sil</button></center>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

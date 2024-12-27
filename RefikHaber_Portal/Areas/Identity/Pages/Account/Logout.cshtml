@@ -1,0 +1,30 @@
+﻿@page
+@model LogoutModel
+@{
+    ViewData["Title"] = "Log out";
+}
+
+<header>
+    <h1 style="margin-top: 50px; margin-bottom: 25px;">Oturumu Sonlandır</h1>
+    @{
+        if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                <button id="actionLogout" type="submit" class="nav-link btn btn-link text-dark">Oturumunuzu sonlandırmak için buraya tıklayın.</button>
+            </form>
+        }
+        else
+        {
+            <p>You have successfully logged out of the application.</p>
+        }
+    }
+</header>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var logoutButton = document.getElementById("actionLogout");
+        if (logoutButton) {
+            logoutButton.click();
+        }
+    });
+
+</script>

@@ -1,0 +1,83 @@
+﻿@using RefikHaber.Utility
+@model List<Haber>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<h1 style="margin-top: 50px; margin-bottom: 25px;">Haberler</h1>
+<p id="noContentMessage">İçerik yok.</p>
+<div class="container mt-5">
+    <div id="newsCards" class="row"></div>
+</div>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/api/v1/haber',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var newsCardsContainer = $('#newsCards');
+                newsCardsContainer.empty();
+
+                
+                if (!data || data.length === 0 || JSON.stringify(data).length < 5) {
+                    $('#noContentMessage').show(); 
+                    return; 
+                } else {
+                    $('#noContentMessage').hide(); 
+                }
+
+                $.each(data, function (index, haber) {
+                    var aciklama = haber.aciklama.length > 180 ? haber.aciklama.substring(0, 180) + '...' : haber.aciklama;
+
+                    var newsCard = `
+                            <div class="col-md-4 mb-4">
+                                <div class="news-card">
+                                    <div class="news-card-img">
+                                        <img src="${haber.resimUrl}" alt="${haber.baslik}" class="img-fluid">
+                                    </div>
+                                    <div class="news-card-body">
+                                        <h4><a href="/Haber/Details/${haber.id}" class="news-card-title">${haber.baslik}</a></h4>
+                                        <p class="news-card-description">${aciklama}</p>
+                                    </div>
+                                    <hr class="news-card-divider">
+                                    <div class="news-card-footer">
+    @if (User.IsInRole("Admin") || User.IsInRole("Kullanici"))
+    {
+                                                <a href="/Haber/Goruntule/${haber.id}" class="btn-detay">Haberi Oku</a>
+    }
+    else
+    {
+                                                <a href="#" onclick="LoginRequired('Haberi okumak için oturum açman gerekiyor!')" class="btn-detay">Haberi Oku</a>
+    }
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    newsCardsContainer.append(newsCard);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Hata:', error);
+            }
+        });
+    });
+
+    function LoginRequired(message) {
+        Swal.fire({
+            title: 'Uyarı!',
+            text: message,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Oturum Aç',
+            cancelButtonText: 'Kapat'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/Identity/Account/Login';
+            } else if (result.isDismissed) {
+                console.log('Uyarı kapatıldı');
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,44 @@
+﻿@model Haber
+
+@{
+    ViewData["Title"] = Model.Baslik;
+    Layout = "_layoutAdminLTE";
+}
+
+<form method="post">
+    <div class="container" style="margin-left:275px;margin-top:30px">
+        <div class="row pb-4">
+
+            <h1 style="color: black;">Haberi Sil</h1>
+            </hr>
+        </div>
+    <input asp-for="Id" hidden />
+
+  
+
+        <div class="mb-3">
+            <label asp-for="Baslik" class="p-0"></label>
+            <input asp-for="Baslik" disabled class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Aciklama" class="p-0"></label>
+            <input asp-for="Aciklama" disabled class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Yazar" class="p-0"></label>
+            <input asp-for="Yazar" disabled class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Puan" class="p-0"></label>
+            <input asp-for="Puan" disabled class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-lg btn-primary" style="width:250px">Haberi Sil</button>
+
+        <a asp-controller="Haber" asp-action="Index" class="btn btn-lg btn-primary" style="width:250px">
+            Haberlere Geri Dön
+        </a>
+
+    </div>
+    </form>
+

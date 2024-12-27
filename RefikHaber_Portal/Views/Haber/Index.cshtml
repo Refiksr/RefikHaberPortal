@@ -1,0 +1,100 @@
+﻿@using RefikHaber.Utility
+@model List<Haber>
+
+@{
+    var maxAciklamaUzunluk = 100;
+    var sonEk = "...";
+
+    Layout = "_layoutAdminLTE";
+
+}
+<div class="container" style="margin-left:275px;margin-top:30px">
+    <div class="row pt-3 pb-4">
+        <div>
+            <h1>Haberler</h1>
+        </div>
+    </div>
+    @if (User.IsInRole(UserRoles.Role_Admin))
+
+    {
+        <div class="row pt-3 pb-2">
+            <div>
+                <a asp-controller="Haber" asp-action="EkleGuncelle" class="btn btn-lg btn-primary" type="button">
+                    Yeni Haber Oluştur
+                </a>
+            </div>
+        </div>
+    }
+    <div style="margin-bottom: 15px;"></div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Id</th>
+                <th>Baslik</th>
+                <th>Aciklama</th>
+                <th>Yazar</th>
+                <th>Puan</th>
+                <th>HaberTuru</th>
+                <th></th>
+
+                @if (User.IsInRole(UserRoles.Role_Admin))
+                {
+                    <th></th>
+                    <th></th>
+                }
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var haber in Model)
+            {
+                var aciklama = haber.Aciklama.Length > maxAciklamaUzunluk
+                ? haber.Aciklama.Substring(0, maxAciklamaUzunluk) + sonEk
+                : haber.Aciklama;
+
+                <tr>
+                    <td align="center" valign="middle">
+                        <img src="@haber.ResimUrl" style="border-radius:7px; border: 1px solid #bbb9b9; max-height: 300px; max-width:300px" />
+                    </td>
+                    <td align="center" valign="middle">@haber.Id</td>
+                    <td align="center" valign="middle">@haber.Baslik</td>
+                    <td align="center" valign="middle">@aciklama</td>
+                    <td align="center" valign="middle">@haber.Yazar</td>
+                    <td align="center" valign="middle">@haber.Puan</td>
+                    <td align="center" valign="middle">@haber.HaberTuru.Ad</td>
+
+                    @if (User.IsInRole(UserRoles.Role_Admin))
+                    {
+                        <td align="center" valign="middle">
+                            <a asp-controller="Haber" asp-action="EkleGuncelle" asp-route-id="@haber.Id" type="button" class="btn btn-success">Güncelle</a>
+                        </td>
+                        <td align="center" valign="middle">
+                            <a asp-controller="Haber" asp-action="Sil" asp-route-id="@haber.Id" type="button" class="btn btn-danger">Sil</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+    function showAlert(message) {
+        Swal.fire({
+            title: 'Başarılı!',
+            text: message,
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: true,
+            confirmButtonText: 'Tamam'
+        });
+    }
+
+    var basariliMesaj = @Html.Raw(Json.Serialize(@TempData["basarili"]));
+
+    if (basariliMesaj) {
+        showAlert(basariliMesaj);
+    }
+</script>

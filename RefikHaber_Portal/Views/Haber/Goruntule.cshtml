@@ -1,0 +1,48 @@
+﻿@model RefikHaber.Models.Haber
+
+@{
+    ViewData["Title"] = Model.Baslik;
+
+}
+	<div class="container" style="margin-left:275px;margin-top:30px">
+        <!-- Haber Başlığı -->
+        <h1>@Html.DisplayFor(model => model.Baslik)</h1>
+
+        <!-- Haber Yazar -->
+        <p style="color: #666; font-size: 1em;">Yazar: @Html.DisplayFor(model => model.Yazar)</p>
+
+        <!-- Haber Puanı -->
+        <p style="color: #888; font-size: 0.9em;">Puan: @Html.DisplayFor(model => model.Puan)</p>
+
+        <!-- Haber Resmi -->
+        @if (!string.IsNullOrEmpty(Model.ResimUrl))
+        {
+            <img src="@Model.ResimUrl" alt="@Model.Baslik" class="img-fluid" style="margin: 20px 0; border-radius: 8px; max-width: 100%;">
+        }
+
+        <!-- Haber Açıklaması -->
+        <div style="margin-top: 20px;">
+            @if (!string.IsNullOrEmpty(Model.Aciklama))
+            {
+                var paragraphs = Model.Aciklama.Split(new[] { "\r\n\r\n" }, StringSplitOptions.None);
+                foreach (var paragraph in paragraphs)
+                {
+                    <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: 20px;">@Html.Raw(paragraph)</p>
+                }
+            }
+            else
+            {
+                <p style="font-size: 1em; color: #999;">Bu haberin içeriği bulunmamaktadır.</p>
+            }
+        </div>
+
+        <!-- Haber Türü -->
+        @if (Model.HaberTuru != null)
+        {
+            <p style="color: #888; font-size: 0.9em;">Haber Türü: @Model.HaberTuru.Ad</p>
+        }
+        else
+        {
+            <p style="color: #999; font-size: 0.9em;">Haber türü belirtilmemiş.</p>
+        }
+    </div>

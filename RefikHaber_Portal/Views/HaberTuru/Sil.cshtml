@@ -1,0 +1,40 @@
+﻿@model HaberTuru
+
+@{
+    ViewData["Title"] = "Sil";
+
+
+
+
+
+
+
+    Layout = "_layoutAdminLTE";
+}
+
+<form method="post">
+    <div class="container" style="margin-left:275px;margin-top:30px">
+		<input asp-for="Id" hidden />
+
+		<div class="border pt-3 mt-5">
+			<div class="row pb-3">
+				<h2 class="text-primary">Sil</h2>
+				</hr>
+			</div>
+
+			<div class="mb-3">
+				<label asp-for="Ad" class="p-0"></label>
+				<input asp-for="Ad" disabled class="form-control" />
+				<span asp-validation-for="Ad" class="text-danger"></span>
+			</div>
+
+			<button type="submit" class="btn btn-lg btn-primary" style="width:300px">Sil</button>
+
+			<a asp-controller="HaberTuru" asp-action="Index" class="btn btn-lg btn-primary" style="width:300px">
+				Geri Dön
+			</a>
+
+		</div>
+	</div>
+</form>
+

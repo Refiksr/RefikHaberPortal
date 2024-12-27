@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using RefikHaber.Utility
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+
+{
+    <li class="nav-item dropdown" style="border: 1px solid #ccc; border-radius: 10px;">
+        <a class="btn custom-login-btn dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-user"></i>@UserManager.GetUserName(User)
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" style="width: 100%;" aria-labelledby="userMenu">
+            @if (User.IsInRole(UserRoles.Role_Admin))
+            {
+                <li>
+                    <a class="dropdown-item" asp-area="" asp-controller="Haber" asp-action="Index">Admin Panel</a>
+                </li>
+            }
+            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">Çıkış Yap</a></li>
+        </ul>
+    </li>
+}
+
+
+
+else
+
+
+
+{
+    <div class="d-flex align-items-center">
+        <a class="custom-login-btn me-2" asp-area="Identity" asp-page="/Account/Login">Giriş Yap</a>
+        <a class="custom-signup-btn" asp-area="Identity" asp-page="/Account/Register">Kayıt Ol</a>
+    </div>
+}
+</ul>

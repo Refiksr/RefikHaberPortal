@@ -1,0 +1,112 @@
+﻿@model Haber
+
+@{
+    ViewData["Title"] = "Güncelle";
+
+
+
+    Layout = "_layoutAdminLTE";
+}
+
+<form method="post" enctype="multipart/form-data">
+	<div class="container" style="margin-left:275px;margin-top:30px">
+        <div class="row pb-4">
+
+            <h1 style="color: black;">@(Model == null ? "Haber Ekle" : "Haberi Düzenle")</h1>
+            </hr>
+        </div>
+
+    <input asp-for="ResimUrl" hidden />
+
+    <div class="row">
+        <div class="col-10">
+
+
+
+                
+
+            <div class="mb-3">
+                <label asp-for="Baslik" class="p-0">Başlık</label>
+                <input asp-for="Baslik" class="form-control" />
+                <span asp-validation-for="Baslik" class="text-danger"></span>
+            </div>
+                <div class="mb-3">
+                    <label asp-for="KategoriId" class="form-label">Kategori</label>
+                    <select asp-for="KategoriId" asp-items="ViewBag.HaberTuruList" class="form-select form-control" aria-label="Kategori Seçin">
+                        <option selected disabled value="">Kategori Seçiniz</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Aciklama" class="form-label">Açıklama</label>
+                    <textarea asp-for="Aciklama" class="form-control" rows="6"></textarea>
+                    <span asp-validation-for="Aciklama" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Yazar" class="p-0">Yazar</label>
+                    <input asp-for="Yazar" class="form-control" value="@User.Identity.Name" readonly />
+                    <input type="hidden" asp-for="Yazar" value="@User.Identity.Name" />
+                    <span asp-validation-for="Yazar" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Puan" class="p-0">Puan</label>
+                    <input asp-for="Puan" class="form-control" type="number" min="1" max="10" step="0.5" value="1.0" id="puanInput" />
+                    <span asp-validation-for="Puan" class="text-danger"></span>
+                </div>
+
+            <div class="mb-3">
+                <label asp-for="ResimUrl" class="p-0">Görsel</label>
+                    <input type="file" name="file" style="height: 60px;" class="form-control" />
+            </div>
+
+                @if (Model != null)
+
+                {
+                    <div class="mb-3" style="max-width: 250px; max-height: 150px;">
+                        <label class="p-0">Mevcut Görsel</label>
+                        <img src="@Model.ResimUrl"
+                             alt="Görsel Yok!"
+                   
+                             style="border-radius:7px; border:1px solid #bbb9b9; width: 250px; height: 150px;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                        <span style="display: none; color: #888;">Görsel bulunamadı.</span>
+                    </div>
+                }
+                <hr / style="margin-top: 5px; margin-bottom: 5px;">
+            @if (Model != null)
+            {
+                   
+                    <button type="submit" class="btn btn-lg btn-success">Güncelle</button>
+            }
+            else
+            {
+                
+                <button type="submit" class="btn btn-lg btn-primary" style="width:250px">Haber Ekle</button>
+            }
+
+            <a asp-controller="Haber" asp-action="Index" class="btn btn-lg btn-danger">
+                Vazgeç
+            </a>
+
+        </div>
+
+        </div>
+
+
+    </div>
+
+
+
+</form>
+
+<script>
+  
+    const puanInput = document.getElementById('puanInput');
+    puanInput.addEventListener('input', function () {
+        if (parseFloat(puanInput.value) > 10) {
+            puanInput.value = 10;
+        }
+    });
+</script>

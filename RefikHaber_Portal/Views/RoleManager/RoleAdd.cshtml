@@ -1,0 +1,22 @@
+﻿@using RefikHaber.Models
+
+@{
+    ViewData["Title"] = "Rol Ekle";
+    Layout = "_layoutAdminLTE";
+}
+@model AppRole
+<div class="container" style="margin-left:275px;margin-top:30px">
+	<h1>Yeni Rol Ekle</h1>
+	<form asp-action="RoleAdd" method="post">
+		<div class="form-group">
+			<label for="Name">Rol Adı</label>
+			<input type="text" class="form-control" id="Name" name="Name" required />
+		</div>
+		<button type="submit" class="btn btn-primary">Ekle</button>
+	</form>
+
+
+</div>
+
+
+
